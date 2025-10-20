@@ -101,6 +101,32 @@ def saveAsBin(text):
     with open("compressed.bin", "wb") as f:
         f.write(b)
 
+# Read the binary file
+def readFromBin():
+    with open("compressed.bin", "rb") as f:  # Read binary data from the binary file
+        binary_data = f.read()
+
+    # Convert bytes to binary string
+    binary_string = ''
+    for byte in binary_data:
+        binary_string += format(byte, '08b')
+    return binary_string
+
+# Decompression
+def decompress(binary_string, codes):
+    reverse_codes = {code: char for char, code in codes.items()}  #(value:'key')
+
+    decoded_text = ''
+    current_code = ''
+
+    for bit in binary_string:
+        current_code += bit
+        # Check if the current code matches any character code (key)
+        if current_code in reverse_codes:
+            decoded_text += reverse_codes[current_code] #map(key) => value
+            current_code = ''
+
+    return decoded_text
 
 
 if __name__ == "__main__":
@@ -111,8 +137,14 @@ if __name__ == "__main__":
     # for i, stage in enumerate(stages):
     #     print(f"Stage {i}: {stage}")
 
-    text = compress(filename,codes)
-    print()
+    text = compress(filename, codes)
+    print("\nCompressed binary string:")
     print(text)
-    
+
     saveAsBin(text)
+
+    # Decompress the data
+    binary_string = readFromBin()
+    decompressed_text = decompress(binary_string, codes)
+    print("\nDecompressed text:")
+    print(decompressed_text)

@@ -1,4 +1,4 @@
-Build Huffman Tree
+#Build Huffman Tree
 
 # def huffman(probabilities):
 #     # Initialize heap with leaf nodes
